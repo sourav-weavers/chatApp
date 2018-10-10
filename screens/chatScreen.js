@@ -7,6 +7,7 @@ import { navigator_style } from './../navigatorStyle';
 import * as firebase from 'firebase';
 import { Card } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import _ from 'lodash';
 class ChatScreen extends Component {
   state = {
     messeges: [],
@@ -24,7 +25,6 @@ class ChatScreen extends Component {
     });
     let chatKey = this.props.roomKey;
     this.setState({roomKey: chatKey});
-    console.log('fetching');
     let chats = [];
     firebase.database().ref('chatrooms').child(chatKey).child('chats').once('value',messages=>{
       messages.forEach(message=>{
@@ -61,10 +61,11 @@ class ChatScreen extends Component {
          AsyncStorage.getItem('username').then(data=>{
           firebase.database().ref('chatrooms').child(this.state.roomKey).child('chats').push({
             messege: data+" quits this room.",
-            sendDate: new Date().toDateString() + ' ' + new Date().toTimeString(),
+            sendDate: new Date().getTime(),
             type: 'exit',
             user: data
           }).then(()=>{
+            this.setState({ messeges : [] })
             this.props.navigator.popToRoot({
               animated: true,
               animationType: 'slide-horizontal',
@@ -108,11 +109,9 @@ class ChatScreen extends Component {
       // let key = firebase.database().ref('chatrooms').child(this.state.roomKey).child('chats').push();
       firebase.database().ref('chatrooms').child(this.state.roomKey).child('chats').push({
         messege: newMsg,
-        sendDate: new Date().toDateString() + ' ' + new Date().toTimeString(),
+        sendDate: new Date().getTime(),
         type: 'message',
         user: this.state.userName
-      }).then(()=>{
-        console.log('messege sent');
       })
   }
   static navigatorStyle = navigator_style;
@@ -125,11 +124,13 @@ class ChatScreen extends Component {
     ]
   }
   render(){
+    let chats = this.state.messeges;
+    let sortedChat = _.orderBy(chats,['sendDate'],['asc']);
     return(
       <KeyboardAwareScrollView extraScrollHeight = {12} >
         <ScrollView style={ styles.scroller} ref="scrollView" onContentSizeChange={this.contentSizeSet}>
         {
-          this.state.messeges.map(item=>{
+          sortedChat.map(item=>{
             if(item.type === 'message'){
               if(item.username === this.state.userName){
                 return(

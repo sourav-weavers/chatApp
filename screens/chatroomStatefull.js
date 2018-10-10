@@ -44,8 +44,8 @@ export default class ChatroomSt extends Component {
  enterRoom(key,name) {
    AsyncStorage.getItem('username').then(data=>{
     firebase.database().ref('chatrooms').child(key).child('chats').push({
-      messege: data+" has joined this room.",
-      sendDate: new Date().toDateString() + ' ' + new Date().toTimeString(),
+      messege: `${data} has joined this room`,
+      sendDate: new Date().getTime(),
       type: 'join',
       user: data
     }).then(()=>{

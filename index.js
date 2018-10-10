@@ -4,12 +4,12 @@ import registerApp from './registerScreens';
 import * as firebase from 'firebase';
 
 firebase.initializeApp({
-  apiKey: "AIzaSyDm2eho-LlSL-5xfY4RSscr4y6D0iGhpvY",
-  authDomain: "chatapp-b388b.firebaseapp.com",
-  databaseURL: "https://chatapp-b388b.firebaseio.com",
-  projectId: "chatapp-b388b",
-  storageBucket: "chatapp-b388b.appspot.com",
-  messagingSenderId: "412421572889"
+  apiKey: "AIzaSyAuEQWkpheUi7TWB5j5PwGMaNO1L0sb6sc",
+  authDomain: "chatapp2-4514e.firebaseapp.com",
+  databaseURL: "https://chatapp2-4514e.firebaseio.com",
+  projectId: "chatapp2-4514e",
+  storageBucket: "chatapp2-4514e.appspot.com",
+  messagingSenderId: "529497189242"
 })
 console.disableYellowBox = true;
 registerApp();
